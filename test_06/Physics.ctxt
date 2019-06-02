@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.target=Physics
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ Physics\ here.\r\n\r\n\ @author\ Manjari\ Senthilkumar\r\n\ @version\ 06/02/2019\r\n
+comment1.params=g\ root\ playervelocity
+comment1.target=Physics(double,\ javafx.scene.layout.Pane,\ javafx.geometry.Point2D)
+comment2.params=value\ entity
+comment2.target=void\ moveX(int,\ javafx.scene.Node)
+comment3.params=value\ entity
+comment3.target=void\ moveY(int,\ javafx.scene.Node)
+comment4.params=
+comment4.target=void\ jumpPlayer()
+numComments=5

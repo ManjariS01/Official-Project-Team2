@@ -26,7 +26,9 @@ public class Game extends Application{
     private HashMap<KeyCode, Boolean> keys = new HashMap<KeyCode, Boolean>();
 
     private ArrayList<Node> platforms = new ArrayList<Node>();
-
+    private Physics phys;
+    private static boolean canJump = true;
+    
     private Pane appRoot = new Pane();
     private Pane gameRoot = new Pane();
     private Pane uiRoot = new Pane();
@@ -34,7 +36,7 @@ public class Game extends Application{
     //player node
     private Node player;
     private Point2D playervelocity = new Point2D(0,0);
-    private boolean canJump = true;
+    
     //player sprite
     Sprite sprite;
     ImageView spriteImg;
@@ -64,11 +66,12 @@ public class Game extends Application{
         Rectangle bg = new Rectangle(720,840);
         ImageView bgImg = convertImageView("C:\\Users\\Manjari\\Desktop\\platform game\\graphics\\background gradient.png");
         Image patt = convertImage("C:\\Users\\Manjari\\Desktop\\platform game\\graphics\\stone_texture4.jpg");
-        Physics phys = new Physics(10)
-        /*
+        phys = new Physics(10, gameRoot, playervelocity);
+        
         String line;
         levelWidth = LevelData.getLevel1()[0].length()*60;
         levelHeight = LevelData.getLevel1().length*60;
+        /*
         for(int i = 0; i < LevelData.getLevel1().length; i++){
             line = LevelData.getLevel1()[i];
             for(int j = 0; j < line.length(); j++)
@@ -80,8 +83,9 @@ public class Game extends Application{
                     platforms.add(platform);
                     break;
                 }
-        }*/
-        player = createEntity(0,1200,40,40,Color.TRANSPARENT);
+        }
+        */
+        player = createEntity(0,1200,40,40,Color.TRANSPARENT,gameRoot);
         
         //sprite
         spriteImg = convertImageView("C:\\Users\\Manjari\\Desktop\\platform game\\graphics\\imageedit_1_9167375545.png");
@@ -122,12 +126,12 @@ public class Game extends Application{
         if(isPressed(KeyCode.UP) && player.getTranslateY() >= 5)
             jumpPlayer();
         if(isPressed(KeyCode.LEFT) && player.getTranslateX() >= 5)
-            movePlayerX(-5);
+            phys.moveX(-5, player);
         if(isPressed(KeyCode.RIGHT) && player.getTranslateX() + 40 <= levelWidth - 5)
-            movePlayerX(5);
+            phys.moveX(5, player);
         if(playervelocity.getY() < 10)
             playervelocity = playervelocity.add(0,1); //x does not increase in velocity
-        movePlayerY((int)playervelocity.getY());
+        phys.moveY((int)playervelocity.getY(), player);
         
     }
 
@@ -138,48 +142,8 @@ public class Game extends Application{
         return keys.getOrDefault(key, false);
     }
 
-    private void movePlayerX(int value)
-    {
-        boolean movingRight = value > 0;
-
-        for(int i = 0; i < Math.abs(value); i++)
-        {
-            for(Node platform : platforms)
-                if(player.getBoundsInParent().intersects(platform.getBoundsInParent()))
-                    if(movingRight){
-                        if(player.getTranslateX() + 40 == platform.getTranslateX())
-                            return;
-                    }
-                    else
-                    if(player.getTranslateX() == platform.getTranslateX() + 60)
-                        return;
-            player.setTranslateX(player.getTranslateX() + (movingRight ? 1 : -1));
-        }
-    }
-
-    private void movePlayerY(int value)
-    {
-        boolean movingDown = value > 0;
-
-        for(int i = 0; i < Math.abs(value); i++){
-            for(Node platform : platforms)
-                if(player.getBoundsInParent().intersects(platform.getBoundsInParent()))
-                    if(movingDown){
-                        if(player.getTranslateY() +40 == platform.getTranslateY())
-                        {
-                            player.setTranslateY(player.getTranslateY()-1);
-                            canJump = true;
-                            return;
-                        }
-                    }
-                    else
-                    if(player.getTranslateY() == platform.getTranslateY() + 60)
-                        return;
-            //gravity
-            player.setTranslateY(player.getTranslateY() + (movingDown ? 1 : - 1));
-        }
-    }
-
+    public static void setCanJump(boolean status){canJump = status;}
+    
     public void jumpPlayer()
     {
         if(canJump)

@@ -4,6 +4,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.Node;
 import javafx.scene.paint.*;
 import javafx.scene.layout.Pane;
+
+import javafx.geometry.Point2D;
 /**
  * Write a description of class Physics here.
  *
@@ -18,10 +20,12 @@ public class Physics
     private double levelHeight;
     private boolean canJump;
     private double vel;
-    public Physics(double g)
+    private Point2D playervelocity;
+    public Physics(double g, Pane root, Point2D playervelocity)
     {
         gForce = g;
         vel = 0;
+        this.playervelocity = playervelocity;
         levelWidth = LevelData.getLevel1()[0].length()*60;
         levelHeight = LevelData.getLevel1().length*60;
         for(int i = 0; i < LevelData.getLevel1().length; i++){
@@ -31,7 +35,7 @@ public class Physics
                     case '0':
                     break;
                     case '1':
-                    Node platform = Game.createEntity(j*60, i*60, 60, 60, Color.GRAY);
+                    Node platform = Game.createEntity(j*60, i*60, 60, 60, Color.GRAY,root);
                     platforms.add(platform);
                     break;
                 }
@@ -56,7 +60,7 @@ public class Physics
             entity.setTranslateX(entity.getTranslateX() + (movingRight ? 1 : -1));
         }
     }
-    private void moveY(int value, Node entity)
+    public void moveY(int value, Node entity)
     {
         boolean movingDown = value > 0;
 
@@ -67,7 +71,7 @@ public class Physics
                         if(entity.getTranslateY() +40 == platform.getTranslateY())
                         {
                             entity.setTranslateY(entity.getTranslateY()-1);
-                            canJump = true;
+                            Game.setCanJump(true);
                             return;
                         }
                     }
@@ -83,8 +87,8 @@ public class Physics
     {
         if(canJump)
         {
-            vel -= 30;
-            canJump = false;
+            playervelocity = playervelocity.add(0,-30);
+            Game.setCanJump(false);
         }
     }
 }
