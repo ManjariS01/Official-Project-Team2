@@ -22,7 +22,7 @@ import java.io.FileInputStream;
  * @author Manjari Senthilkumar
  * @version 5/31/2019
  */
-public class Main04 extends Application{
+public class Game extends Application{
     private HashMap<KeyCode, Boolean> keys = new HashMap<KeyCode, Boolean>();
 
     private ArrayList<Node> platforms = new ArrayList<Node>();
@@ -64,6 +64,8 @@ public class Main04 extends Application{
         Rectangle bg = new Rectangle(720,840);
         ImageView bgImg = convertImageView("C:\\Users\\Manjari\\Desktop\\platform game\\graphics\\background gradient.png");
         Image patt = convertImage("C:\\Users\\Manjari\\Desktop\\platform game\\graphics\\stone_texture4.jpg");
+        Physics phys = new Physics(10)
+        /*
         String line;
         levelWidth = LevelData.getLevel1()[0].length()*60;
         levelHeight = LevelData.getLevel1().length*60;
@@ -74,11 +76,11 @@ public class Main04 extends Application{
                     case '0':
                     break;
                     case '1':
-                    Node platform = createEntity(j*60, i*60, 60, 60, Color.GRAY);
+                    Node platform = createEntity(j*60, i*60, 60, 60, Color.GRAY, gameRoot);
                     platforms.add(platform);
                     break;
                 }
-        }
+        }*/
         player = createEntity(0,1200,40,40,Color.TRANSPARENT);
         
         //sprite
@@ -173,6 +175,7 @@ public class Main04 extends Application{
                     else
                     if(player.getTranslateY() == platform.getTranslateY() + 60)
                         return;
+            //gravity
             player.setTranslateY(player.getTranslateY() + (movingDown ? 1 : - 1));
         }
     }
@@ -186,14 +189,14 @@ public class Main04 extends Application{
         }
     }
 
-    private Node createEntity(int x, int y, int w, int h, Paint fill)
+    public static Node createEntity(int x, int y, int w, int h, Paint fill, Pane root)
     {
         Rectangle entity = new Rectangle(w,h);
         entity.setTranslateX(x);
         entity.setTranslateY(y);
         entity.setFill(fill);
 
-        gameRoot.getChildren().add(entity);
+        root.getChildren().add(entity);
         return entity;
     }
 
