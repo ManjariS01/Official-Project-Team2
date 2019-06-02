@@ -1,0 +1,6 @@
+#BlueJ class context
+comment0.target=LevelData
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ LevelData\ here.\r\n\r\n\ @author\ Manjari\ Senthilkumar\r\n\ @version\ 05/31/2019\r\n
+comment1.params=
+comment1.target=java.lang.String[]\ getLevel1()
+numComments=2
