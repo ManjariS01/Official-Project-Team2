@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -40,6 +39,9 @@ public class Game extends Application{
     //player sprite
     Sprite sprite;
     ImageView spriteImg;
+    
+    //Rain 
+    Rain rain;
 
     private int levelWidth;
     private int levelHeight;
@@ -50,8 +52,11 @@ public class Game extends Application{
         Scene scene = new Scene(appRoot);
         scene.setOnKeyPressed(event -> keys.put(event.getCode(), true));
         scene.setOnKeyReleased(event -> keys.put(event.getCode(), false));
-        stage.setTitle("wazzup");
+        stage.setTitle("wazzup0");
+        stage.setWidth(720);
+        stage.setHeight(800);
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
 
         AnimationTimer timer = new AnimationTimer(){
@@ -64,14 +69,14 @@ public class Game extends Application{
     private void initContent() throws Exception
     {
         //background
-        Rectangle bg = new Rectangle(720,1800);
+        Rectangle bg = new Rectangle(720,3000);
         
-        ImageView bgImg = convertImageView("C:\\Users\\Manjari\\Desktop\\platform game\\graphics\\ndtuxfew.png");
+        ImageView bgImg = convertImageView("C:\\Users\\Manjari\\Desktop\\platform game\\graphics\\gvzpafno.png");
         Image patt = convertImage("C:\\Users\\Manjari\\Desktop\\platform game\\graphics\\stone_texture4.jpg");
         //bgImg.setViewport(new Rectangle2D(0,800,720,1800));
         gameRoot.getChildren().add(bgImg);
-        //Rain
-        Rain rain = new Rain(gameRoot);
+        //Rain22
+        rain = new Rain(gameRoot);
         
         phys = new Physics(10, gameRoot, playervelocity);
         
@@ -80,7 +85,7 @@ public class Game extends Application{
         levelWidth = LevelData.getLevel1()[0].length()*60;
         levelHeight = LevelData.getLevel1().length*60;
         //sprite control box
-        player = createEntity(0,1600,40,40,Color.TRANSPARENT,gameRoot);
+        player = createEntity(90,2100,40,40,Color.TRANSPARENT,gameRoot);
 
         //sprite
         spriteImg = convertImageView("C:\\Users\\Manjari\\Desktop\\platform game\\graphics\\imageedit_1_9167375545.png");
@@ -104,7 +109,7 @@ public class Game extends Application{
         player.translateYProperty().addListener((obs, old, newValue) -> {
                 int offset = newValue.intValue();
                 if(offset > 60 && offset < levelHeight - 120){
-                    gameRoot.setLayoutY(-(offset - 900));
+                    gameRoot.setLayoutY(-(offset - 660));
                 }
             });
         appRoot.getChildren().addAll(gameRoot);
@@ -113,6 +118,7 @@ public class Game extends Application{
 
     private void update()
     {
+        
         //getTranslate computes layoutX - current X position and
         //sprite follows node
         sprite.setTranslateX(player.getTranslateX());
@@ -126,8 +132,9 @@ public class Game extends Application{
             phys.moveX(5, player);
         if(playervelocity.getY() < 10)
             playervelocity = playervelocity.add(0,1); //x does not increase in velocity
+        rain.fall();
         phys.moveY((int)playervelocity.getY(), player);
-
+        
     }
 
     private boolean isPressed(KeyCode key)

@@ -6,5 +6,5 @@ comment1.target=Rain(javafx.scene.layout.Pane)
 comment2.params=
 comment2.target=void\ fall()
 comment3.params=
-comment3.target=void\ render()
+comment3.target=javafx.geometry.Point2D\ getVel()
 numComments=4
