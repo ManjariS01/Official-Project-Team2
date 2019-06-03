@@ -15,7 +15,7 @@ public class Rain
    private double posX;
    private double posY;
    private int width;
-   private int[] velDex;
+   private int[] velDex = new int[1000];
    private Point2D vel = new Point2D(0,0);
    private Node[] drops = new Node[1000];
    Physics phys;
@@ -36,7 +36,7 @@ public class Rain
    {
        for(int i = 0; i < drops.length; i++){
        if(vel.getY() < 10)
-            vel = vel.add(0, velDex[i]); //x does not increase in velocity
+            vel = vel.add(0, 1);//velDex[i]); //x does not increase in velocity
        phys.moveY((int)vel.getY(), drops[i]);
     }
    }
