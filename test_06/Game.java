@@ -28,7 +28,7 @@ public class Game extends Application{
     private ArrayList<Node> platforms = new ArrayList<Node>();
     private Physics phys;
     private static boolean canJump = true;
-    
+
     private Pane appRoot = new Pane();
     private Pane gameRoot = new Pane();
     private Pane uiRoot = new Pane();
@@ -36,11 +36,11 @@ public class Game extends Application{
     //player node
     private Node player;
     private Point2D playervelocity = new Point2D(0,0);
-    
+
     //player sprite
     Sprite sprite;
     ImageView spriteImg;
-    
+
     private int levelWidth;
     private int levelHeight;
     @Override
@@ -63,30 +63,25 @@ public class Game extends Application{
 
     private void initContent() throws Exception
     {
-        Rectangle bg = new Rectangle(720,840);
-        ImageView bgImg = convertImageView("C:\\Users\\Manjari\\Desktop\\platform game\\graphics\\background gradient.png");
+        //background
+        Rectangle bg = new Rectangle(720,1800);
+        
+        ImageView bgImg = convertImageView("C:\\Users\\Manjari\\Desktop\\platform game\\graphics\\ndtuxfew.png");
         Image patt = convertImage("C:\\Users\\Manjari\\Desktop\\platform game\\graphics\\stone_texture4.jpg");
+        //bgImg.setViewport(new Rectangle2D(0,800,720,1800));
+        gameRoot.getChildren().add(bgImg);
+        //Rain
+        Rain rain = new Rain(gameRoot);
+        
         phys = new Physics(10, gameRoot, playervelocity);
         
+        //cam
         String line;
         levelWidth = LevelData.getLevel1()[0].length()*60;
         levelHeight = LevelData.getLevel1().length*60;
-        /*
-        for(int i = 0; i < LevelData.getLevel1().length; i++){
-            line = LevelData.getLevel1()[i];
-            for(int j = 0; j < line.length(); j++)
-                switch(line.charAt(j)){
-                    case '0':
-                    break;
-                    case '1':
-                    Node platform = createEntity(j*60, i*60, 60, 60, Color.GRAY, gameRoot);
-                    platforms.add(platform);
-                    break;
-                }
-        }
-        */
-        player = createEntity(0,1200,40,40,Color.TRANSPARENT,gameRoot);
-        
+        //sprite control box
+        player = createEntity(0,1600,40,40,Color.TRANSPARENT,gameRoot);
+
         //sprite
         spriteImg = convertImageView("C:\\Users\\Manjari\\Desktop\\platform game\\graphics\\imageedit_1_9167375545.png");
         spriteImg.setViewport(new Rectangle2D(0,0,37,62));
@@ -94,13 +89,12 @@ public class Game extends Application{
             spriteImg,
             Duration.millis(700),
             21,7,0,0,37,62,0,0);
-            //count, col, offsetx, offsety, widt, height, x, y
+        //count, col, offsetx, offsety, widt, height, x, y
         sprite.setCycleCount(Animation.INDEFINITE);
         sprite.play();
         gameRoot.getChildren().add(spriteImg);
-          
-        //cam follow
 
+        //cam follow
         player.translateXProperty().addListener((obs, old, newValue) -> {
                 int offset = newValue.intValue();
                 if(offset > 640 && offset < levelWidth - 640){
@@ -109,11 +103,12 @@ public class Game extends Application{
             });
         player.translateYProperty().addListener((obs, old, newValue) -> {
                 int offset = newValue.intValue();
-                if(offset > 60 && offset < levelHeight - 140){
-                    gameRoot.setLayoutY(-(offset - 800));
+                if(offset > 60 && offset < levelHeight - 120){
+                    gameRoot.setLayoutY(-(offset - 900));
                 }
             });
-        appRoot.getChildren().addAll(bgImg, gameRoot);
+        appRoot.getChildren().addAll(gameRoot);
+        
     }
 
     private void update()
@@ -122,7 +117,7 @@ public class Game extends Application{
         //sprite follows node
         sprite.setTranslateX(player.getTranslateX());
         sprite.setTranslateY(player.getTranslateY());
-        
+
         if(isPressed(KeyCode.UP) && player.getTranslateY() >= 5)
             jumpPlayer();
         if(isPressed(KeyCode.LEFT) && player.getTranslateX() >= 5)
@@ -132,7 +127,7 @@ public class Game extends Application{
         if(playervelocity.getY() < 10)
             playervelocity = playervelocity.add(0,1); //x does not increase in velocity
         phys.moveY((int)playervelocity.getY(), player);
-        
+
     }
 
     private boolean isPressed(KeyCode key)
@@ -143,7 +138,7 @@ public class Game extends Application{
     }
 
     public static void setCanJump(boolean status){canJump = status;}
-    
+
     public void jumpPlayer()
     {
         if(canJump)
@@ -166,7 +161,8 @@ public class Game extends Application{
 
     public static void main(String[] args){
         launch(args);}
-        public static ImageView convertImageView(String file) throws Exception
+
+    public static ImageView convertImageView(String file) throws Exception
     {
         FileInputStream input = new FileInputStream(file);
         Image image = new Image(input);
