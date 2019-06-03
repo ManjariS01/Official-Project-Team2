@@ -41,7 +41,7 @@ public class Game extends Application{
     ImageView spriteImg;
     
     //Rain 
-    Rain rain;
+    Rain02 rain;
 
     private int levelWidth;
     private int levelHeight;
@@ -54,7 +54,7 @@ public class Game extends Application{
         scene.setOnKeyReleased(event -> keys.put(event.getCode(), false));
         stage.setTitle("wazzup0");
         stage.setWidth(720);
-        stage.setHeight(800);
+        stage.setHeight(950);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
@@ -75,9 +75,9 @@ public class Game extends Application{
         Image patt = convertImage("C:\\Users\\Manjari\\Desktop\\platform game\\graphics\\stone_texture4.jpg");
         //bgImg.setViewport(new Rectangle2D(0,800,720,1800));
         gameRoot.getChildren().add(bgImg);
-        //Rain22
-        rain = new Rain(gameRoot);
-        
+        //Rain
+        //rain = new Rain(gameRoot);
+        rain = new Rain02(gameRoot);
         phys = new Physics(10, gameRoot, playervelocity);
         
         //cam
@@ -109,7 +109,7 @@ public class Game extends Application{
         player.translateYProperty().addListener((obs, old, newValue) -> {
                 int offset = newValue.intValue();
                 if(offset > 60 && offset < levelHeight - 120){
-                    gameRoot.setLayoutY(-(offset - 660));
+                    gameRoot.setLayoutY(-(offset - 800));
                 }
             });
         appRoot.getChildren().addAll(gameRoot);

@@ -38,6 +38,10 @@ public class Physics
                     Node platform = Game.createEntity(j*60, i*60, 60, 60, Color.GRAY,root);
                     platforms.add(platform);
                     break;
+                    case '2':
+                    Node lift = Game.createEntity(j*60, i*60, 150, 40, Color.WHITE, root);
+                    platforms.add(lift);
+                    break;
                 }
         }
     }
